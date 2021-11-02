@@ -21,7 +21,8 @@ function loop(t){
     //movimento
     if (quadradoX > canvas.width + 20) quadradoX = 0;
 
-    quadradoX = quadradoX + (1*dt);
+    quadradoX = quadradoX + (100*dt);
+    quadradoY = quadradoY + 2*Math.cos(t/200)
 
     //fundo
     ctx.fillStyle = 'black'
