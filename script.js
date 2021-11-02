@@ -18,6 +18,11 @@ function loop(t){
     fps = (1/(dt/1000))
     console.log (fps)
 
+    //movimento
+    if (quadradoX > canvas.width + 20) quadradoX = 0;
+
+    quadradoX = quadradoX + 10;
+
     //fundo
     ctx.fillStyle = 'black'
     ctx.fillRect(0 , 0 , canvas.width , canvas.height)
