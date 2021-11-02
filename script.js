@@ -9,8 +9,15 @@ canvas.height = vh;
 let quadradoX = 100;
 let quadradoY = 100;
 
-ctx.fillStyle = 'black'
-ctx.fillRect(0 , 0 , canvas.width , canvas.height)
+function loop(){
+    //fundo
+    ctx.fillStyle = 'black'
+    ctx.fillRect(0 , 0 , canvas.width , canvas.height)
 
-ctx.fillStyle = 'white'
-ctx.fillRect(quadradoX , quadradoY , 20, 20)
+    //quadradinho
+    ctx.fillStyle = 'white'
+    ctx.fillRect(quadradoX , quadradoY , 20, 20)
+
+    requestAnimationFrame(loop)
+}
+loop();
