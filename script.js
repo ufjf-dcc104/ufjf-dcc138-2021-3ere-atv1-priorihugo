@@ -6,3 +6,7 @@ const vh = (Math.max(document.documentElement.clientHeight || 0, window.innerHei
 canvas.width = vw;
 canvas.height = vh;
 
+
+
+ctx.fillStyle = 'black'
+ctx.fillRect(0 , 0 , canvas.width , canvas.height)
