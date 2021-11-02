@@ -7,9 +7,9 @@ canvas.width = vw;
 canvas.height = vh;
 
 //estado do quadradinho
-let r = 30 // raio do movimento
-let quadradoX = (canvas.width/2 - 10);
-let quadradoY = (canvas.height/2 - 10);
+let r = 14 // raio do movimento
+let quadradoX = (canvas.width/2) - 10;
+let quadradoY = (canvas.height/2) - 100;
 let anguloX = 0;
 let anguloY = 0;
 let frequencia = 2;
@@ -33,7 +33,7 @@ function loop(t){
 
     //quadradoX = quadradoX + (100*dt);
     quadradoX = quadradoX + (r*Math.cos(anguloX)) + 100*dt
-    //quadradoY = quadradoY + (r*Math.sin(anguloY))
+    quadradoY = quadradoY + (r*Math.sin(anguloY))
 
     //fundo
     ctx.fillStyle = 'black'
