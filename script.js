@@ -6,8 +6,15 @@ const vh = (Math.max(document.documentElement.clientHeight || 0, window.innerHei
 canvas.width = vw;
 canvas.height = vh;
 
-let quadradoX = 100;
-let quadradoY = 100;
+//estado do quadradinho
+let r = 30 // raio do movimento
+let quadradoX = (canvas.width/2 - 10);
+let quadradoY = (canvas.height/2 - 10);
+let anguloX = 0;
+let anguloY = 0;
+let frequencia = 2;
+
+
 let t0,dt,fps;
 
 requestAnimationFrame(loop);
@@ -16,13 +23,17 @@ function loop(t){
     t0 = t0 ?? t;
     dt = (t - t0)/1000;
     fps = (1/(dt))
-    console.log('dt ' + dt)
 
     //movimento
     if (quadradoX > canvas.width + 20) quadradoX = 0;
+    if (quadradoX < 0) quadradoX = canvas.width;
 
-    quadradoX = quadradoX + (100*dt);
-    quadradoY = quadradoY + 2*Math.cos(t/200)
+    anguloX = (anguloX + Math.PI*dt)
+    anguloY = (anguloY + Math.PI*dt) 
+
+    //quadradoX = quadradoX + (100*dt);
+    quadradoX = quadradoX + (r*Math.cos(anguloX))
+    //quadradoY = quadradoY + (r*Math.sin(anguloY))
 
     //fundo
     ctx.fillStyle = 'black'
@@ -30,7 +41,7 @@ function loop(t){
 
     //quadradinho
     ctx.fillStyle = 'white'
-    ctx.fillRect(quadradoX , quadradoY , 20, 20)
+    ctx.fillRect(quadradoX,quadradoY,20 , 20 )
     requestAnimationFrame(loop);
     t0 = t;
 }
