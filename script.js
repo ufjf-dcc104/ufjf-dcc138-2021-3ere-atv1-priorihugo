@@ -8,8 +8,16 @@ canvas.height = vh;
 
 let quadradoX = 100;
 let quadradoY = 100;
+let t0,dt,fps;
 
-function loop(){
+requestAnimationFrame(loop);
+function loop(t){
+
+    t0 = t0 ?? t;
+    dt = (t - t0);
+    fps = (1/(dt/1000))
+    console.log (fps)
+
     //fundo
     ctx.fillStyle = 'black'
     ctx.fillRect(0 , 0 , canvas.width , canvas.height)
@@ -17,7 +25,6 @@ function loop(){
     //quadradinho
     ctx.fillStyle = 'white'
     ctx.fillRect(quadradoX , quadradoY , 20, 20)
-
-    requestAnimationFrame(loop)
+    requestAnimationFrame(loop);
+    t0 = t;
 }
-loop();
