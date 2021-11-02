@@ -6,10 +6,11 @@ const vh = (Math.max(document.documentElement.clientHeight || 0, window.innerHei
 canvas.width = vw;
 canvas.height = vh;
 
-
+let quadradoX = 100;
+let quadradoY = 100;
 
 ctx.fillStyle = 'black'
 ctx.fillRect(0 , 0 , canvas.width , canvas.height)
 
 ctx.fillStyle = 'white'
-ctx.fillRect(100 , 100 , 20, 20)
+ctx.fillRect(quadradoX , quadradoY , 20, 20)
