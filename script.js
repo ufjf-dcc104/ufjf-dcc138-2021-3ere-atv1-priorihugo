@@ -14,14 +14,14 @@ requestAnimationFrame(loop);
 function loop(t){
 
     t0 = t0 ?? t;
-    dt = (t - t0);
-    fps = (1/(dt/1000))
-    console.log (fps)
+    dt = (t - t0)/1000;
+    fps = (1/(dt))
+    console.log('dt ' + dt)
 
     //movimento
     if (quadradoX > canvas.width + 20) quadradoX = 0;
 
-    quadradoX = quadradoX + 10 * dt;
+    quadradoX = quadradoX + (1*dt);
 
     //fundo
     ctx.fillStyle = 'black'
