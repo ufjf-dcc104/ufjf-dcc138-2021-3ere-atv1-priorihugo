@@ -10,3 +10,6 @@ canvas.height = vh;
 
 ctx.fillStyle = 'black'
 ctx.fillRect(0 , 0 , canvas.width , canvas.height)
+
+ctx.fillStyle = 'white'
+ctx.fillRect(100 , 100 , 20, 20)
