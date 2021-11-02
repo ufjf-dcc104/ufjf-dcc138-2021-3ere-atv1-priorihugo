@@ -32,7 +32,7 @@ function loop(t){
     anguloY = (anguloY + Math.PI*dt) 
 
     //quadradoX = quadradoX + (100*dt);
-    quadradoX = quadradoX + (r*Math.cos(anguloX))
+    quadradoX = quadradoX + (r*Math.cos(anguloX)) + 100*dt
     //quadradoY = quadradoY + (r*Math.sin(anguloY))
 
     //fundo
