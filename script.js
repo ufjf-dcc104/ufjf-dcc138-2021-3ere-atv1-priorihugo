@@ -1,13 +1,24 @@
+window.addEventListener('resize', meuResize , false)
+
+function meuResize(){
+    vw = (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) * 0.9) // 90% da tela
+    vh = (Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0) *0.9) // 90% da tela
+    canvas.width = vw;
+    canvas.height = vh; 
+}
+
+
 //canvas config
 const canvas = document.getElementById('gameScreen');
 const ctx = canvas.getContext('2d')
-const vw = (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) * 0.9) // 90% da tela
-const vh = (Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0) *0.9) // 90% da tela
+let vw = (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) * 0.9) // 90% da tela
+let vh = (Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0) *0.9) // 90% da tela
 canvas.width = vw;
 canvas.height = vh;
 
+
 //estado do quadradinho
-let r = 14 // raio do movimento
+let r = 13 // raio do movimento
 let quadradoX = (canvas.width/2) - 10;
 let quadradoY = (canvas.height/2) - 100;
 let anguloX = 0;
@@ -27,6 +38,9 @@ function loop(t){
     //movimento
     if (quadradoX > canvas.width + 20) quadradoX = 0;
     if (quadradoX < 0) quadradoX = canvas.width;
+
+    if (quadradoY > canvas.height + 20) quadradoY = 0;
+    if (quadradoY < 0) quadradoY = canvas.height;
 
     anguloX = (anguloX + Math.PI*dt)
     anguloY = (anguloY + Math.PI*dt) 
