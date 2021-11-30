@@ -42,24 +42,31 @@ canvas.height = vh;
 //estado do quadradinho
 let personagem = {
  VELOCIDADE: 100,
- ACELERACAO: 40,
+ ACELERACAO: 200,
  X: (canvas.width/2) - 10,
  VX: 0,
  AX: 0,
  Y: (canvas.height/2) - 100,
  VY: 0,
  AY: 0,
+ desenha(){
+    ctx.fillStyle = 'white'
+    ctx.fillRect(this.X,this.Y, 20 , 20 )
+}
 };
-
 let inimigo = {
     VELOCIDADE: 100,
-    ACELERACAO: 40,
+    ACELERACAO: 100,
     X: (canvas.width/2) + 40,
     VX: 0,
     AX: 0,
     Y: (canvas.height/2) + 100,
     VY: 0,
     AY: 0,
+    desenha(){
+        ctx.fillStyle = 'red'
+        ctx.fillRect(this.X,this.Y, 20 , 20 )
+    }
    };
 let t0,dt,fps;
 
@@ -71,13 +78,18 @@ function loop(t){
     fps = (1/(dt))
 
     //movimento
-    if (personagem.X > canvas.width + 20) personagem.x = 0;
-    if (personagem.X < 0) personagem.X = canvas.width;
-    if (personagem.Y > canvas.height + 20) personagem.Y = 0;
-    if (personagem.Y < 0) personagem.Y = canvas.height;
+    if (personagem.X > canvas.width-20) personagem.VX = 0;
+    if (personagem.X < 0) personagem.VX = 0;
+    if (personagem.Y > canvas.height - 20) personagem.VY = 0;
+    if (personagem.Y < 0) personagem.VY = 0;
 
-    inimigo.AY = (personagem.Y - inimigo.Y)
-    inimigo.AX = (personagem.X - inimigo.X)
+    if (inimigo.X > canvas.width-20) inimigo.VX = 0;
+    if (inimigo.X < 0) inimigo.VX = 0;
+    if (inimigo.Y > canvas.height - 20) inimigo.VY = 0;
+    if (inimigo.Y < 0) inimigo.VY = 0;
+
+    inimigo.AY = (personagem.Y - inimigo.Y) - inimigo.VY;
+    inimigo.AX = (personagem.X - inimigo.X) - inimigo.VX
 
 
     personagem.VX = personagem.VX + personagem.AX*dt;
@@ -93,11 +105,9 @@ function loop(t){
     ctx.fillStyle = 'black'
     ctx.fillRect(0 , 0 , canvas.width , canvas.height)
 
-    //quadradinho
-    ctx.fillStyle = 'red'
-    ctx.fillRect(inimigo.X,inimigo.Y, 20 , 20 )
+    inimigo.desenha();
+    personagem.desenha();
     requestAnimationFrame(loop);
-    ctx.fillStyle = 'white'
-    ctx.fillRect(personagem.X,personagem.Y, 20 , 20 )
+
     t0 = t;
 }
