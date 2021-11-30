@@ -12,14 +12,22 @@ function meuResize(){
 ///FIZ A BESTEIRA DE APAGAR TODAS AS MINHAS PASTAS DE EXERCICIO
 ///DEI UM FETCH NO REPOSITORIO E VOU COMEÇAR TUDO DE NOVO
 window.addEventListener('keydown' , teclaPressionada , false);
+window.addEventListener('keyup' , teclaSolta , false);
 function teclaPressionada(e){
     e.preventDefault();
     //console.log(e.keyCode);
-    if(e.keyCode == 37) quadradoVX = -20;
-    if(e.keyCode == 38) quadradoVY = -20;
-    if(e.keyCode == 39) quadradoVX = 20;
-    if(e.keyCode == 40) quadradoVY = 20;
-
+    if(e.keyCode == 37) quadradoVX = -VELOCIDADE;
+    if(e.keyCode == 38) quadradoVY = -VELOCIDADE;
+    if(e.keyCode == 39) quadradoVX = VELOCIDADE;
+    if(e.keyCode == 40) quadradoVY = VELOCIDADE;
+}
+function teclaSolta(e){
+    e.preventDefault();
+    //console.log(e.keyCode);
+    if(e.keyCode == 37) quadradoVX = 0;
+    if(e.keyCode == 38) quadradoVY = 0;
+    if(e.keyCode == 39) quadradoVX = 0;
+    if(e.keyCode == 40) quadradoVY = 0;
 }
 
 //canvas config
@@ -32,7 +40,7 @@ canvas.height = vh;
 
 
 //estado do quadradinho
-let r = 13 // raio do movimento
+const VELOCIDADE = 100;
 let quadradoX = (canvas.width/2) - 10;
 let quadradoVX = 0;
 let quadradoY = (canvas.height/2) - 100;
