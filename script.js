@@ -70,25 +70,27 @@ let inimigo = {
   mover: moverElemento,
   controlar: fugir,
 };
+let mediaX = 0 , mediaY = 0 , nInimigos = 20;
 const inimigos = [];
-for(let i = 0 ; i < 20 ; i++){
-    let xp = Math.random()*canvas.width;
-    let yp = Math.random()*canvas.height;
-    let inimigo = {
-        VELOCIDADE: 100,
-        ACELERACAO: 4,
-        cor: "red",
-        X: xp,
-        VX: 0,
-        AX: 0,
-        Y: yp,
-        VY: 0,
-        AY: 0,
-        desenha: desenhaElemento,
-        mover: moverElemento,
-        controlar: perseguir,
-      };
-      inimigos.push(inimigo);
+for (let i = 0; i < nInimigos; i++) {
+  let xp = Math.random() * canvas.width;
+  let yp = Math.random() * canvas.height;
+  let inimigo = {
+    VELOCIDADE: 100,
+    ACELERACAO: 0.2,
+    cor: "red",
+    X: xp,
+    VX: 0,
+    AX: 0,
+    Y: yp,
+    VY: 0,
+    AY: 0,
+    desenha: desenhaElemento,
+    mover: moverElemento,
+    controlar: perseguir,
+    fugir : fugir,
+  };
+  inimigos.push(inimigo);
 }
 function moverElemento() {
   this.VX = this.VX + this.AX * dt;
@@ -101,13 +103,20 @@ function desenhaElemento() {
   ctx.fillRect(this.X, this.Y, 20, 20);
 }
 function perseguir(alvo) {
-  this.AY = this.ACELERACAO*(alvo.Y - this.Y) - this.VY;
-  this.AX = this.ACELERACAO*(alvo.X - this.X) - this.VX;
+  this.AY = this.ACELERACAO * (alvo.Y - this.Y) - 0.5*this.VY;
+  this.AX = this.ACELERACAO * (alvo.X - this.X) - 0.5*this.VX;
 }
 function fugir(alvo) {
-    this.AY = -this.ACELERACAO*(alvo.Y - this.Y) - this.VY;
-    this.AX = -this.ACELERACAO*(alvo.X - this.X) - this.VX;
-  }
+  this.AY = -this.ACELERACAO * (alvo.Y - this.Y ) - 0.5*this.VY;
+  this.AX = -this.ACELERACAO * (alvo.X - this.X ) - 0.5*this.VX;
+}
+/*
+function evitar() {
+  inimigos.forEach((element) => {
+    fugir(element);
+  });
+}
+*/
 let t0, dt, fps;
 
 requestAnimationFrame(loop);
@@ -116,24 +125,33 @@ function loop(t) {
   dt = (t - t0) / 1000;
   fps = 1 / dt;
 
-  //movimento
-  //if (personagem.X > canvas.width - 20) personagem.VX = 0;
-  //if (personagem.X < 0) personagem.VX = 0;
-  //if (personagem.Y > canvas.height - 20) personagem.VY = 0;
-  //if (personagem.Y < 0) personagem.VY = 0;
-
-  //if (inimigo.X > canvas.width - 20) inimigo.VX = 0;
-  //if (inimigo.X < 0) inimigo.VX = 0;
-  //if (inimigo.Y > canvas.height - 20) inimigo.VY = 0;
-  //if (inimigo.Y < 0) inimigo.VY = 0;
-
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  inimigos.forEach(element => {
-      element.controlar(personagem);
-      element.mover();
-      element.desenha();
+    inimigos.forEach((element)=>{
+        mediaX = mediaX + element.X;
+        mediaY = mediaY + element.Y;
+    })
+  inimigos.forEach((element) => {
+    element.controlar(personagem);
+    element.mover();
+    //element.evitarInimigos();
+    element.desenha();
+
+    if (element.X > canvas.width - 20) {
+      element.X = 0;
+    }
+    if (element.X < 0) {
+      element.X = canvas.width;
+    }
+    if (element.Y > canvas.height - 20) {
+      element.Y = 0;
+    }
+    if (element.Y < 0) {
+      element.Y = canvas.height;
+    }
   });
+  mediaX = 0;
+  mediaY = 0;
   //inimigo.controlar(personagem);
   //inimigo.mover();
   //inimigo.desenha();
