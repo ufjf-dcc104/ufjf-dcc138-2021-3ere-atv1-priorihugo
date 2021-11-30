@@ -14,7 +14,11 @@ function meuResize(){
 window.addEventListener('keydown' , teclaPressionada , false);
 function teclaPressionada(e){
     e.preventDefault();
-    console.log(e.keyCode);
+    //console.log(e.keyCode);
+    if(e.keyCode == 37) quadradoVX = -20;
+    if(e.keyCode == 38) quadradoVY = -20;
+    if(e.keyCode == 39) quadradoVX = 20;
+    if(e.keyCode == 40) quadradoVY = 20;
 
 }
 
@@ -30,7 +34,9 @@ canvas.height = vh;
 //estado do quadradinho
 let r = 13 // raio do movimento
 let quadradoX = (canvas.width/2) - 10;
+let quadradoVX = 0;
 let quadradoY = (canvas.height/2) - 100;
+let quadradoVY = 0;
 let anguloX = 0;
 let anguloY = 0;
 let frequencia = 2;
@@ -48,16 +54,12 @@ function loop(t){
     //movimento
     if (quadradoX > canvas.width + 20) quadradoX = 0;
     if (quadradoX < 0) quadradoX = canvas.width;
-
     if (quadradoY > canvas.height + 20) quadradoY = 0;
     if (quadradoY < 0) quadradoY = canvas.height;
 
-    //anguloX = (anguloX + Math.PI*dt)
-    //anguloY = (anguloY + Math.PI*dt) 
 
-    //quadradoX = quadradoX + (100*dt);
-    quadradoX = quadradoX + (r*Math.cos(anguloX)) + 100*dt
-    //quadradoY = quadradoY + (r*Math.sin(anguloY))
+    quadradoX = quadradoX + quadradoVX*dt;
+    quadradoY = quadradoY + quadradoVY*dt;
 
     //fundo
     ctx.fillStyle = 'black'
