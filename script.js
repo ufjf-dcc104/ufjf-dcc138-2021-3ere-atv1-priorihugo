@@ -48,44 +48,40 @@ canvas.height = vh;
 let personagem = {
   VELOCIDADE: 100,
   ACELERACAO: 200,
+  cor: "white",
   X: canvas.width / 2 - 10,
   VX: 0,
   AX: 0,
   Y: canvas.height / 2 - 100,
   VY: 0,
   AY: 0,
-  desenha() {
-    ctx.fillStyle = "white";
-    ctx.fillRect(this.X, this.Y, 20, 20);
-  },
-  mover() {
-    this.VX = this.VX + this.AX * dt;
-    this.VY = this.VY + this.AY * dt;
-    this.X = this.X + this.VX * dt;
-    this.Y = this.Y + this.VY * dt;
-  },
+  desenha: desenhaElemento,
+  mover: moverElemento,
 };
 let inimigo = {
   VELOCIDADE: 100,
   ACELERACAO: 100,
+  cor: "red",
   X: canvas.width / 2 + 40,
   VX: 0,
   AX: 0,
   Y: canvas.height / 2 + 100,
   VY: 0,
   AY: 0,
-  desenha() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(this.X, this.Y, 40, 40);
-  },
-  mover() {
-    this.VX = this.VX + this.AX * dt;
-    this.VY = this.VY + this.AY * dt;
-    this.X = this.X + this.VX * dt;
-    this.Y = this.Y + this.VY * dt;
-  },
+  desenha: desenhaElemento,
+  mover: moverElemento,
 };
 let t0, dt, fps;
+function moverElemento() {
+  this.VX = this.VX + this.AX * dt;
+  this.VY = this.VY + this.AY * dt;
+  this.X = this.X + this.VX * dt;
+  this.Y = this.Y + this.VY * dt;
+}
+function desenhaElemento() {
+  ctx.fillStyle = this.cor;
+  ctx.fillRect(this.X, this.Y, 20, 20);
+}
 
 requestAnimationFrame(loop);
 function loop(t) {
