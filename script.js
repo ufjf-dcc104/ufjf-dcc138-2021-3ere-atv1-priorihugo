@@ -1,3 +1,4 @@
+/*
 window.addEventListener('resize', meuResize , false)
 
 function meuResize(){
@@ -6,7 +7,16 @@ function meuResize(){
     canvas.width = vw;
     canvas.height = vh; 
 }
+*/
 
+///FIZ A BESTEIRA DE APAGAR TODAS AS MINHAS PASTAS DE EXERCICIO
+///DEI UM FETCH NO REPOSITORIO E VOU COMEÇAR TUDO DE NOVO
+window.addEventListener('keydown' , teclaPressionada , false);
+function teclaPressionada(e){
+    e.preventDefault();
+    console.log(e.keyCode);
+
+}
 
 //canvas config
 const canvas = document.getElementById('gameScreen');
@@ -42,12 +52,12 @@ function loop(t){
     if (quadradoY > canvas.height + 20) quadradoY = 0;
     if (quadradoY < 0) quadradoY = canvas.height;
 
-    anguloX = (anguloX + Math.PI*dt)
-    anguloY = (anguloY + Math.PI*dt) 
+    //anguloX = (anguloX + Math.PI*dt)
+    //anguloY = (anguloY + Math.PI*dt) 
 
     //quadradoX = quadradoX + (100*dt);
     quadradoX = quadradoX + (r*Math.cos(anguloX)) + 100*dt
-    quadradoY = quadradoY + (r*Math.sin(anguloY))
+    //quadradoY = quadradoY + (r*Math.sin(anguloY))
 
     //fundo
     ctx.fillStyle = 'black'
