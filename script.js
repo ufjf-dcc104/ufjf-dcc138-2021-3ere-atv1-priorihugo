@@ -16,10 +16,13 @@ function teclaPressionada(e) {
   e.preventDefault();
   console.log(e.keyCode);
   if (e.keyCode == 32) {
-    projetil.X = personagem.X;
-    projetil.Y = personagem.Y;
-    projetil.VX = 300;
-    projetil.AX = 100;
+    if (projetil.X == -1000) {
+        console.log("xd")
+      projetil.X = personagem.X;
+      projetil.Y = personagem.Y;
+      projetil.VX = 700;
+      projetil.AX = 100;
+    }
   }
   if (e.keyCode == 37) personagem.AX = -personagem.ACELERACAO;
   if (e.keyCode == 38) personagem.AY = -personagem.ACELERACAO;
@@ -53,7 +56,7 @@ let personagem = {
   VELOCIDADE: 100,
   ACELERACAO: 400,
   cor: "white",
-  X: canvas.width / 2 - 10,
+  X: 40,
   VX: 0,
   AX: 0,
   Y: canvas.height / 2 - 100,
@@ -68,7 +71,7 @@ let projetil = {
   VELOCIDADE: 100,
   ACELERACAO: 0.5,
   cor: "blue",
-  X: canvas.width - 1000,
+  X: - 1000,
   VX: 0,
   AX: 0,
   Y: canvas.height - 1000,
@@ -84,12 +87,14 @@ let projetil = {
       this.VX = 0;
     }
   },
-  mover: moverElemento
+  mover: moverElemento,
 };
-let mediaX = 0, mediaY = 0, nInimigos = 20;
+let mediaX = 0,
+  mediaY = 0,
+  nInimigos = 20;
 const inimigos = [];
 for (let i = 0; i < nInimigos; i++) {
-  let xp = 10*Math.random() *canvas.width + canvas.width;
+  let xp = 10 * Math.random() * canvas.width + canvas.width;
   let yp = Math.random() * canvas.height;
   let inimigo = {
     VELOCIDADE: 100,
@@ -106,7 +111,7 @@ for (let i = 0; i < nInimigos; i++) {
     desenha: desenhaElemento,
     mover: moverElemento,
     controlar: perseguir,
-    evitarInimigos : evitar,
+    evitarInimigos: evitar,
   };
   inimigos.push(inimigo);
 }
@@ -122,7 +127,7 @@ function desenhaElemento() {
 }
 function perseguir(alvo) {
   this.AY = this.ACELERACAO * Math.sign(alvo.Y - this.Y) - 0.5 * this.VY;
-  this.AX = this.ACELERACAO * Math.sign(alvo.X - this.X) - 0.5 * this.VX;
+  this.AX = this.ACELERACAO ///* Math.sign(alvo.X - this.X) - 0.5 * this.VX;
 }
 function fugir(alvo) {
   this.AY = -this.ACELERACAO * Math.sign(alvo.Y - this.Y) - 0.5 * this.VY;
@@ -134,8 +139,13 @@ function evitar() {
     fugir(element);
   });
 }
-function colisao(A , B){
-    return !((A.X > B.X + B.SX) || (A.X + A.SX < B.X) || (A.Y > B.Y + B.SY) || (A.Y + A.SY < B.Y));
+function colisao(A, B) {
+  return !(
+    A.X > B.X + B.SX ||
+    A.X + A.SX < B.X ||
+    A.Y > B.Y + B.SY ||
+    A.Y + A.SY < B.Y
+  );
 }
 
 let t0, dt, fps;
@@ -173,18 +183,17 @@ function loop(t) {
       element.VX = 0;
       element.X = canvas.width * 2;
     }
-    if(colisao(projetil , element) && element != projetil){
-        console.log("xd")
+    if (colisao(projetil, element) && element != projetil) {
+      console.log("xd");
 
-        projetil.X = -1000;
-        projetil.VX = 0;
-        projetil.AX = 0;
+      projetil.X = -1000;
+      projetil.VX = 0;
+      projetil.AX = 0;
 
-        element.AX = 0;
-        element.VX = 100;
-        element.X = canvas.width * 2;
+      element.AX = 0;
+      element.VX = 100;
+      element.X = canvas.width * 2;
     }
-    
   });
   mediaX = 0;
   mediaY = 0;
@@ -207,6 +216,7 @@ function loop(t) {
   if (personagem.Y < 0) {
     personagem.VY *= -0.5;
   }
+  console.log(projetil.X)
   personagem.mover();
   personagem.desenha();
   requestAnimationFrame(loop);
