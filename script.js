@@ -17,7 +17,7 @@ function teclaPressionada(e) {
   console.log(e.keyCode);
   if (e.keyCode == 32) {
     if (projetil.X == -1000) {
-        console.log("xd")
+      console.log("xd");
       projetil.X = personagem.X;
       projetil.Y = personagem.Y;
       projetil.VX = 700;
@@ -62,8 +62,8 @@ let personagem = {
   Y: canvas.height / 2 - 100,
   VY: 0,
   AY: 0,
-  SX: 20,
-  SY: 20,
+  SX: 40,
+  SY: 15,
   desenha: desenhaElemento,
   mover: moverElemento,
 };
@@ -71,14 +71,14 @@ let projetil = {
   VELOCIDADE: 100,
   ACELERACAO: 0.5,
   cor: "blue",
-  X: - 1000,
+  X: -1000,
   VX: 0,
   AX: 0,
   Y: canvas.height - 1000,
   VY: 0,
   AY: 0,
-  SX: 30,
-  SY: 10,
+  SX: 40,
+  SY: 5,
   desenha: desenhaElemento,
   controlar: function () {
     if (this.X > canvas.width + 60) {
@@ -98,7 +98,7 @@ for (let i = 0; i < nInimigos; i++) {
   let yp = Math.random() * canvas.height;
   let inimigo = {
     VELOCIDADE: 100,
-    ACELERACAO: 400,
+    ACELERACAO: 200,
     cor: "red",
     X: xp,
     VX: 0,
@@ -127,7 +127,7 @@ function desenhaElemento() {
 }
 function perseguir(alvo) {
   this.AY = this.ACELERACAO * Math.sign(alvo.Y - this.Y) - 0.5 * this.VY;
-  this.AX = this.ACELERACAO ///* Math.sign(alvo.X - this.X) - 0.5 * this.VX;
+  this.AX = -this.ACELERACAO; ///* Math.sign(alvo.X - this.X) - 0.5 * this.VX;
 }
 function fugir(alvo) {
   this.AY = -this.ACELERACAO * Math.sign(alvo.Y - this.Y) - 0.5 * this.VY;
@@ -148,7 +148,10 @@ function colisao(A, B) {
   );
 }
 
-let t0, dt, fps;
+let t0,
+  dt,
+  fps,
+  pontos = 0;
 
 requestAnimationFrame(loop);
 function loop(t) {
@@ -184,7 +187,6 @@ function loop(t) {
       element.X = canvas.width * 2;
     }
     if (colisao(projetil, element) && element != projetil) {
-      console.log("xd");
 
       projetil.X = -1000;
       projetil.VX = 0;
@@ -193,6 +195,16 @@ function loop(t) {
       element.AX = 0;
       element.VX = 100;
       element.X = canvas.width * 2;
+
+      pontos++;
+    }
+    if (colisao(personagem, element) && element != personagem) {
+
+      element.AX = 0;
+      element.VX = 100;
+      element.X = canvas.width * 2;
+
+      pontos--
     }
   });
   mediaX = 0;
@@ -216,9 +228,11 @@ function loop(t) {
   if (personagem.Y < 0) {
     personagem.VY *= -0.5;
   }
-  console.log(projetil.X)
   personagem.mover();
   personagem.desenha();
+  ctx.fillStyle = "yellow";
+  ctx.font = "20px Impact";
+  ctx.fillText(pontos, 40, 40);
   requestAnimationFrame(loop);
 
   t0 = t;
