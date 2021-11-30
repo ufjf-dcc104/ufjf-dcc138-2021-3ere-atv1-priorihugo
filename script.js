@@ -70,8 +70,8 @@ let inimigo = {
   AY: 0,
   desenha: desenhaElemento,
   mover: moverElemento,
+  controlar: controlaElemento,
 };
-let t0, dt, fps;
 function moverElemento() {
   this.VX = this.VX + this.AX * dt;
   this.VY = this.VY + this.AY * dt;
@@ -82,6 +82,11 @@ function desenhaElemento() {
   ctx.fillStyle = this.cor;
   ctx.fillRect(this.X, this.Y, 20, 20);
 }
+function controlaElemento(alvo) {
+  this.AY = alvo.Y - this.Y - this.VY;
+  this.AX = alvo.X - this.X - this.VX;
+}
+let t0, dt, fps;
 
 requestAnimationFrame(loop);
 function loop(t) {
@@ -100,18 +105,12 @@ function loop(t) {
   if (inimigo.Y > canvas.height - 20) inimigo.VY = 0;
   if (inimigo.Y < 0) inimigo.VY = 0;
 
-  inimigo.AY = personagem.Y - inimigo.Y - inimigo.VY;
-  inimigo.AX = personagem.X - inimigo.X - inimigo.VX;
-
-  personagem.mover();
-
-  inimigo.VX = inimigo.VX + inimigo.AX * dt;
-  inimigo.VY = inimigo.VY + inimigo.AY * dt;
-  inimigo.X = inimigo.X + inimigo.VX * dt;
-  inimigo.Y = inimigo.Y + inimigo.VY * dt;
-  //fundo
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  personagem.mover();
+  inimigo.controlar(personagem);
+  inimigo.mover();
 
   inimigo.desenha();
   personagem.desenha();
