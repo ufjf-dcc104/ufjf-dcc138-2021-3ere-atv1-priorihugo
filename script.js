@@ -8,7 +8,6 @@ function meuResize(){
     canvas.height = vh; 
 }
 */
-
 ///FIZ A BESTEIRA DE APAGAR TODAS AS MINHAS PASTAS DE EXERCICIO
 ///DEI UM FETCH NO REPOSITORIO E VOU COMEÇAR TUDO DE NOVO
 window.addEventListener("keydown", teclaPressionada, false);
@@ -44,7 +43,6 @@ let vh =
 canvas.width = vw;
 canvas.height = vh;
 
-//estado do quadradinho
 let personagem = {
   VELOCIDADE: 100,
   ACELERACAO: 200,
@@ -60,7 +58,7 @@ let personagem = {
 };
 let inimigo = {
   VELOCIDADE: 100,
-  ACELERACAO: 100,
+  ACELERACAO: 0.5,
   cor: "red",
   X: canvas.width / 2 + 40,
   VX: 0,
@@ -70,8 +68,28 @@ let inimigo = {
   AY: 0,
   desenha: desenhaElemento,
   mover: moverElemento,
-  controlar: controlaElemento,
+  controlar: fugir,
 };
+const inimigos = [];
+for(let i = 0 ; i < 20 ; i++){
+    let xp = Math.random()*canvas.width;
+    let yp = Math.random()*canvas.height;
+    let inimigo = {
+        VELOCIDADE: 100,
+        ACELERACAO: 4,
+        cor: "red",
+        X: xp,
+        VX: 0,
+        AX: 0,
+        Y: yp,
+        VY: 0,
+        AY: 0,
+        desenha: desenhaElemento,
+        mover: moverElemento,
+        controlar: perseguir,
+      };
+      inimigos.push(inimigo);
+}
 function moverElemento() {
   this.VX = this.VX + this.AX * dt;
   this.VY = this.VY + this.AY * dt;
@@ -82,10 +100,14 @@ function desenhaElemento() {
   ctx.fillStyle = this.cor;
   ctx.fillRect(this.X, this.Y, 20, 20);
 }
-function controlaElemento(alvo) {
-  this.AY = alvo.Y - this.Y - this.VY;
-  this.AX = alvo.X - this.X - this.VX;
+function perseguir(alvo) {
+  this.AY = this.ACELERACAO*(alvo.Y - this.Y) - this.VY;
+  this.AX = this.ACELERACAO*(alvo.X - this.X) - this.VX;
 }
+function fugir(alvo) {
+    this.AY = -this.ACELERACAO*(alvo.Y - this.Y) - this.VY;
+    this.AX = -this.ACELERACAO*(alvo.X - this.X) - this.VX;
+  }
 let t0, dt, fps;
 
 requestAnimationFrame(loop);
@@ -95,24 +117,28 @@ function loop(t) {
   fps = 1 / dt;
 
   //movimento
-  if (personagem.X > canvas.width - 20) personagem.VX = 0;
-  if (personagem.X < 0) personagem.VX = 0;
-  if (personagem.Y > canvas.height - 20) personagem.VY = 0;
-  if (personagem.Y < 0) personagem.VY = 0;
+  //if (personagem.X > canvas.width - 20) personagem.VX = 0;
+  //if (personagem.X < 0) personagem.VX = 0;
+  //if (personagem.Y > canvas.height - 20) personagem.VY = 0;
+  //if (personagem.Y < 0) personagem.VY = 0;
 
-  if (inimigo.X > canvas.width - 20) inimigo.VX = 0;
-  if (inimigo.X < 0) inimigo.VX = 0;
-  if (inimigo.Y > canvas.height - 20) inimigo.VY = 0;
-  if (inimigo.Y < 0) inimigo.VY = 0;
+  //if (inimigo.X > canvas.width - 20) inimigo.VX = 0;
+  //if (inimigo.X < 0) inimigo.VX = 0;
+  //if (inimigo.Y > canvas.height - 20) inimigo.VY = 0;
+  //if (inimigo.Y < 0) inimigo.VY = 0;
 
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  inimigos.forEach(element => {
+      element.controlar(personagem);
+      element.mover();
+      element.desenha();
+  });
+  //inimigo.controlar(personagem);
+  //inimigo.mover();
+  //inimigo.desenha();
 
   personagem.mover();
-  inimigo.controlar(personagem);
-  inimigo.mover();
-
-  inimigo.desenha();
   personagem.desenha();
   requestAnimationFrame(loop);
 
