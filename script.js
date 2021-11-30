@@ -16,18 +16,18 @@ window.addEventListener('keyup' , teclaSolta , false);
 function teclaPressionada(e){
     e.preventDefault();
     //console.log(e.keyCode);
-    if(e.keyCode == 37) quadradoVX = -VELOCIDADE;
-    if(e.keyCode == 38) quadradoVY = -VELOCIDADE;
-    if(e.keyCode == 39) quadradoVX = VELOCIDADE;
-    if(e.keyCode == 40) quadradoVY = VELOCIDADE;
+    if(e.keyCode == 37) quadradoAX = -ACELERACAO;
+    if(e.keyCode == 38) quadradoAY = -ACELERACAO;
+    if(e.keyCode == 39) quadradoAX = ACELERACAO;
+    if(e.keyCode == 40) quadradoAY = ACELERACAO;
 }
 function teclaSolta(e){
     e.preventDefault();
     //console.log(e.keyCode);
-    if(e.keyCode == 37) quadradoVX = 0;
-    if(e.keyCode == 38) quadradoVY = 0;
-    if(e.keyCode == 39) quadradoVX = 0;
-    if(e.keyCode == 40) quadradoVY = 0;
+    if(e.keyCode == 37) quadradoAX = 0;
+    if(e.keyCode == 38) quadradoAY = 0;
+    if(e.keyCode == 39) quadradoAX = 0;
+    if(e.keyCode == 40) quadradoAY = 0;
 }
 
 //canvas config
@@ -41,14 +41,15 @@ canvas.height = vh;
 
 //estado do quadradinho
 const VELOCIDADE = 100;
+const ACELERACAO = 40;
 let quadradoX = (canvas.width/2) - 10;
 let quadradoVX = 0;
+let quadradoAX = 0;
 let quadradoY = (canvas.height/2) - 100;
 let quadradoVY = 0;
+let quadradoAY = 0;
 let anguloX = 0;
 let anguloY = 0;
-let frequencia = 2;
-
 
 let t0,dt,fps;
 
@@ -65,9 +66,12 @@ function loop(t){
     if (quadradoY > canvas.height + 20) quadradoY = 0;
     if (quadradoY < 0) quadradoY = canvas.height;
 
-
+    quadradoVX = quadradoVX + quadradoAX*dt;
+    quadradoVY = quadradoVY + quadradoAY*dt;
     quadradoX = quadradoX + quadradoVX*dt;
     quadradoY = quadradoY + quadradoVY*dt;
+
+    console.log(quadradoVX)
 
     //fundo
     ctx.fillStyle = 'black'
