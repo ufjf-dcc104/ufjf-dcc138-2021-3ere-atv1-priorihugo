@@ -51,7 +51,7 @@ canvas.height = vh;
 
 let personagem = {
   VELOCIDADE: 100,
-  ACELERACAO: 200,
+  ACELERACAO: 400,
   cor: "white",
   X: canvas.width / 2 - 10,
   VX: 0,
@@ -89,11 +89,11 @@ let projetil = {
 let mediaX = 0, mediaY = 0, nInimigos = 20;
 const inimigos = [];
 for (let i = 0; i < nInimigos; i++) {
-  let xp = Math.random() * canvas.width;
+  let xp = 10*Math.random() *canvas.width + canvas.width;
   let yp = Math.random() * canvas.height;
   let inimigo = {
     VELOCIDADE: 100,
-    ACELERACAO: 0.2,
+    ACELERACAO: 400,
     cor: "red",
     X: xp,
     VX: 0,
@@ -106,7 +106,7 @@ for (let i = 0; i < nInimigos; i++) {
     desenha: desenhaElemento,
     mover: moverElemento,
     controlar: perseguir,
-    fugir: fugir,
+    evitarInimigos : evitar,
   };
   inimigos.push(inimigo);
 }
@@ -128,13 +128,16 @@ function fugir(alvo) {
   this.AY = -this.ACELERACAO * Math.sign(alvo.Y - this.Y) - 0.5 * this.VY;
   this.AX = -this.ACELERACAO * Math.sign(alvo.X - this.X) - 0.5 * this.VX;
 }
-/*
+
 function evitar() {
   inimigos.forEach((element) => {
     fugir(element);
   });
 }
-*/
+function colisao(A , B){
+    return ((A.X > B.X + B.SX) || (A.X + A.SX> B.X) || (A.Y > B.Y + B.SY) || (A.Y + A.Y> B.Y));
+}
+
 let t0, dt, fps;
 
 requestAnimationFrame(loop);
@@ -150,23 +153,27 @@ function loop(t) {
     mediaY = mediaY + element.Y;
   });
   inimigos.forEach((element) => {
-    //element.controlar(personagem);
+    element.controlar(personagem);
     element.mover();
-    //element.evitarInimigos();
+    element.evitarInimigos();
     element.desenha();
 
+    /*
     if (element.X > canvas.width - 20) {
-      element.X = 0;
+      element.VX *= -0.5;
     }
     if (element.X < 0) {
-      element.X = canvas.width;
+      element.VX *= -0.5;
     }
     if (element.Y > canvas.height - 20) {
-      element.Y = 0;
+      element.VY *= -0.5;
     }
-    if (element.Y < 0) {
-      element.Y = canvas.height;
+    */
+    if (element.X < 0) {
+      element.VX = 0;
+      element.X = canvas.width * 2;
     }
+    
   });
   mediaX = 0;
   mediaY = 0;
@@ -177,6 +184,18 @@ function loop(t) {
   projetil.desenha();
   projetil.controlar();
 
+  if (personagem.X > canvas.width - 20) {
+    personagem.VX *= -0.5;
+  }
+  if (personagem.X < 0) {
+    personagem.VX *= -0.5;
+  }
+  if (personagem.Y > canvas.height - 20) {
+    personagem.VY *= -0.5;
+  }
+  if (personagem.Y < 0) {
+    personagem.VY *= -0.5;
+  }
   personagem.mover();
   personagem.desenha();
   requestAnimationFrame(loop);
