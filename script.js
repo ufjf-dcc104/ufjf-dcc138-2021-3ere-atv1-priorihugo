@@ -68,10 +68,10 @@ let projetil = {
   VELOCIDADE: 100,
   ACELERACAO: 0.5,
   cor: "blue",
-  X: canvas.width + 100,
+  X: canvas.width - 1000,
   VX: 0,
   AX: 0,
-  Y: canvas.height + 100,
+  Y: canvas.height - 1000,
   VY: 0,
   AY: 0,
   SX: 30,
@@ -135,7 +135,7 @@ function evitar() {
   });
 }
 function colisao(A , B){
-    return ((A.X > B.X + B.SX) || (A.X + A.SX> B.X) || (A.Y > B.Y + B.SY) || (A.Y + A.Y> B.Y));
+    return !((A.X > B.X + B.SX) || (A.X + A.SX < B.X) || (A.Y > B.Y + B.SY) || (A.Y + A.SY < B.Y));
 }
 
 let t0, dt, fps;
@@ -172,6 +172,17 @@ function loop(t) {
     if (element.X < 0) {
       element.VX = 0;
       element.X = canvas.width * 2;
+    }
+    if(colisao(projetil , element) && element != projetil){
+        console.log("xd")
+
+        projetil.X = -1000;
+        projetil.VX = 0;
+        projetil.AX = 0;
+
+        element.AX = 0;
+        element.VX = 100;
+        element.X = canvas.width * 2;
     }
     
   });
