@@ -40,17 +40,16 @@ canvas.height = vh;
 
 
 //estado do quadradinho
-const VELOCIDADE = 100;
-const ACELERACAO = 40;
-let quadradoX = (canvas.width/2) - 10;
-let quadradoVX = 0;
-let quadradoAX = 0;
-let quadradoY = (canvas.height/2) - 100;
-let quadradoVY = 0;
-let quadradoAY = 0;
-let anguloX = 0;
-let anguloY = 0;
-
+let personagem = {
+ VELOCIDADE: 100,
+ ACELERACAO: 40,
+ X: (canvas.width/2) - 10,
+ VX: 0,
+ AX: 0,
+ Y: (canvas.height/2) - 100,
+ VY: 0,
+ AY: 0,
+};
 let t0,dt,fps;
 
 requestAnimationFrame(loop);
@@ -61,17 +60,15 @@ function loop(t){
     fps = (1/(dt))
 
     //movimento
-    if (quadradoX > canvas.width + 20) quadradoX = 0;
-    if (quadradoX < 0) quadradoX = canvas.width;
-    if (quadradoY > canvas.height + 20) quadradoY = 0;
-    if (quadradoY < 0) quadradoY = canvas.height;
+    if (personagem.X > canvas.width + 20) personagem.x = 0;
+    if (personagem.X < 0) personagem.X = canvas.width;
+    if (personagem.Y > canvas.height + 20) personagem.Y = 0;
+    if (personagem.Y < 0) personagem.Y = canvas.height;
 
-    quadradoVX = quadradoVX + quadradoAX*dt;
-    quadradoVY = quadradoVY + quadradoAY*dt;
-    quadradoX = quadradoX + quadradoVX*dt;
-    quadradoY = quadradoY + quadradoVY*dt;
-
-    console.log(quadradoVX)
+    personagem.VX = personagem.VX + personagem.AX*dt;
+    personagem.VY = personagem.VY + personagem.AY*dt;
+    personagem.X = personagem.X + personagem.VX*dt;
+    personagem.Y = personagem.Y + personagem.VY*dt;
 
     //fundo
     ctx.fillStyle = 'black'
@@ -79,7 +76,7 @@ function loop(t){
 
     //quadradinho
     ctx.fillStyle = 'white'
-    ctx.fillRect(quadradoX,quadradoY,20 , 20 )
+    ctx.fillRect(personagem.X,personagem.Y, 20 , 20 )
     requestAnimationFrame(loop);
     t0 = t;
 }
