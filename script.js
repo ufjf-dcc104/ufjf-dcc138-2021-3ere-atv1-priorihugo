@@ -14,7 +14,13 @@ window.addEventListener("keydown", teclaPressionada, false);
 window.addEventListener("keyup", teclaSolta, false);
 function teclaPressionada(e) {
   e.preventDefault();
-  //console.log(e.keyCode);
+  console.log(e.keyCode);
+  if (e.keyCode == 32) {
+    projetil.X = personagem.X;
+    projetil.Y = personagem.Y;
+    projetil.VX = 300;
+    projetil.AX = 100;
+  }
   if (e.keyCode == 37) personagem.AX = -personagem.ACELERACAO;
   if (e.keyCode == 38) personagem.AY = -personagem.ACELERACAO;
   if (e.keyCode == 39) personagem.AX = personagem.ACELERACAO;
@@ -53,24 +59,34 @@ let personagem = {
   Y: canvas.height / 2 - 100,
   VY: 0,
   AY: 0,
+  SX: 20,
+  SY: 20,
   desenha: desenhaElemento,
   mover: moverElemento,
 };
-let inimigo = {
+let projetil = {
   VELOCIDADE: 100,
   ACELERACAO: 0.5,
-  cor: "red",
-  X: canvas.width / 2 + 40,
+  cor: "blue",
+  X: canvas.width + 100,
   VX: 0,
   AX: 0,
-  Y: canvas.height / 2 + 100,
+  Y: canvas.height + 100,
   VY: 0,
   AY: 0,
+  SX: 30,
+  SY: 10,
   desenha: desenhaElemento,
-  mover: moverElemento,
-  controlar: fugir,
+  controlar: function () {
+    if (this.X > canvas.width + 60) {
+      this.X = -1000;
+      this.AX = 0;
+      this.VX = 0;
+    }
+  },
+  mover: moverElemento
 };
-let mediaX = 0 , mediaY = 0 , nInimigos = 20;
+let mediaX = 0, mediaY = 0, nInimigos = 20;
 const inimigos = [];
 for (let i = 0; i < nInimigos; i++) {
   let xp = Math.random() * canvas.width;
@@ -85,10 +101,12 @@ for (let i = 0; i < nInimigos; i++) {
     Y: yp,
     VY: 0,
     AY: 0,
+    SX: 20,
+    SY: 20,
     desenha: desenhaElemento,
     mover: moverElemento,
     controlar: perseguir,
-    fugir : fugir,
+    fugir: fugir,
   };
   inimigos.push(inimigo);
 }
@@ -100,15 +118,15 @@ function moverElemento() {
 }
 function desenhaElemento() {
   ctx.fillStyle = this.cor;
-  ctx.fillRect(this.X, this.Y, 20, 20);
+  ctx.fillRect(this.X, this.Y, this.SX, this.SY);
 }
 function perseguir(alvo) {
-  this.AY = this.ACELERACAO * (alvo.Y - this.Y) - 0.5*this.VY;
-  this.AX = this.ACELERACAO * (alvo.X - this.X) - 0.5*this.VX;
+  this.AY = this.ACELERACAO * Math.sign(alvo.Y - this.Y) - 0.5 * this.VY;
+  this.AX = this.ACELERACAO * Math.sign(alvo.X - this.X) - 0.5 * this.VX;
 }
 function fugir(alvo) {
-  this.AY = -this.ACELERACAO * (alvo.Y - this.Y ) - 0.5*this.VY;
-  this.AX = -this.ACELERACAO * (alvo.X - this.X ) - 0.5*this.VX;
+  this.AY = -this.ACELERACAO * Math.sign(alvo.Y - this.Y) - 0.5 * this.VY;
+  this.AX = -this.ACELERACAO * Math.sign(alvo.X - this.X) - 0.5 * this.VX;
 }
 /*
 function evitar() {
@@ -127,12 +145,12 @@ function loop(t) {
 
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-    inimigos.forEach((element)=>{
-        mediaX = mediaX + element.X;
-        mediaY = mediaY + element.Y;
-    })
   inimigos.forEach((element) => {
-    element.controlar(personagem);
+    mediaX = mediaX + element.X;
+    mediaY = mediaY + element.Y;
+  });
+  inimigos.forEach((element) => {
+    //element.controlar(personagem);
     element.mover();
     //element.evitarInimigos();
     element.desenha();
@@ -155,6 +173,9 @@ function loop(t) {
   //inimigo.controlar(personagem);
   //inimigo.mover();
   //inimigo.desenha();
+  projetil.mover();
+  projetil.desenha();
+  projetil.controlar();
 
   personagem.mover();
   personagem.desenha();
